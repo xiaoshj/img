@@ -1,0 +1,29 @@
+#include <opencv2/highgui/highgui.hpp>    
+#include <opencv2/imgproc/imgproc.hpp>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+	Mat img = imread("D:\\22.jpg");
+	if (img.empty()) {
+		cout << "open the picture failure" << endl;
+		return -1;
+	}
+	imshow("picture",img);
+	Mat image[3] ;
+	
+	split(img, image);
+	for (int i = 0; i < 3; i++)
+	{                      
+		equalizeHist( image[i], image[i]);
+	}
+	merge(image, 3, img);
+	imshow("直方图均衡化图像增强效果", img);
+
+
+	waitKey();
+	return 0;
+}
