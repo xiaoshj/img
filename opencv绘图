@@ -1,0 +1,35 @@
+#include<opencv.hpp>
+using namespace cv;
+Mat img;
+const char* drave = "draw the line anddemo";
+void myline();
+void myangle();
+int main() {
+	img = imread("D:\\22.jpg");
+	if (!img.data) {
+		printf("the picture is not exists");
+		return -1;
+	}
+	namedWindow(drave, CV_WINDOW_AUTOSIZE);
+	imshow(drave, img);
+	myline();
+   myangle();
+	namedWindow("output", CV_WINDOW_AUTOSIZE);
+	imshow("output", img);
+	waitKey();
+	return 0;
+}
+void myline() {
+	Point p1 = Point(20, 30);
+	Point p2;
+	p2.x = 300;
+	p2.y = 300;
+	Scalar color = Scalar(0, 0, 255);
+	line(img, p1, p2, color, 1, LINE_4);
+}
+void myangle()
+{
+	Rect rect = Rect(200, 200, 100, 300);
+	Scalar color = Scalar(255, 0, 0);
+	rectangle(img, rect, color, 2, LINE_8);
+}
