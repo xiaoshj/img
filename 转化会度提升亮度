@@ -1,0 +1,39 @@
+#include<opencv.hpp>
+using namespace cv;
+int main()
+{
+	Mat src, dst;
+	src = imread("D:\\22.jpg");//导入图像
+	cvtColor(src, src, CV_RGB2GRAY);//转换成灰度图像
+	char input_win[] = "inputmessage";
+	namedWindow(input_win, CV_WINDOW_AUTOSIZE);
+	imshow(input_win, src);//显示原图
+	int height = src.rows;
+	int width = src.cols;
+	dst = Mat::zeros(src.size(), src.type());//图像编辑成矩阵
+	int alpha = 1.2;
+	int beta = 2;
+	for (int row = 0;row < height;row++) {
+		for (int col = 0;col < width;col++) {
+			if (src.channels() == 3) {
+				float r = src.at<Vec3b>(row, col)[0];
+				float g = src.at<Vec3b>(row, col)[1];
+				float b = src.at<Vec3b>(row, col)[2];
+				dst.at<Vec3b>(row, col)[0] = saturate_cast<uchar>(r*alpha+beta);//计算三通道图象，提升对比度
+				dst.at<Vec3b>(row, col)[1] = saturate_cast<uchar>(g*alpha + beta);
+				dst.at<Vec3b>(row, col)[2] = saturate_cast<uchar>(b*alpha + beta);
+			}
+			else if (src.channels() == 1)
+			{
+				float v = src.at<uchar>(row, col);
+				dst.at<Vec3b>(row, col) = saturate_cast<uchar>(v*alpha + beta);
+
+			}
+		}
+	}
+
+	namedWindow("output", CV_WINDOW_AUTOSIZE);
+	imshow("output", dst);
+	waitKey();
+	return 0;
+}
